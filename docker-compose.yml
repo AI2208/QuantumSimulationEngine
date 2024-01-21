@@ -1,0 +1,34 @@
+version: '3'
+services:
+  quantuminterface:
+    build: ./QuantumInterface
+    ports:
+      - "5000:5000"
+
+  quantumcircuitprocessor:
+    build: ./QuantumCircuitProcessor
+    ports:
+      - "5001:5000"
+    depends_on:
+      - db
+
+  blochspherevisualiser:
+    build: ./BlochSphereVisualiser
+    ports:
+      - "5002:80"
+    environment:
+      - QUANTUM_CIRCUIT_PROCESSOR_URL=http://quantumcircuitprocessor:5000
+
+  db:
+    image: postgres
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: QuantumAPIdb
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:

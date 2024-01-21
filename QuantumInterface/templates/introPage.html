@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+  <head>
+      <!-- Meta Tags -->
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <title>Quantum Simulator Engine</title>
+  
+      <!-- CSS Links -->
+      <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+      <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@900&display=swap" rel="stylesheet">
+      <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300&display=swap" rel="stylesheet">
+      <link href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css" type="text/css" rel="stylesheet" />
+      <link type="text/css" rel="stylesheet" href="{{ url_for('static',filename='css/style.css') }}"/>
+  
+      <!-- JavaScript Libraries -->
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+  </head>
+  <body style="background-image:url('../static/bg.png');background-size: 100vw 100vh;background-repeat: no-repeat; display: flex;flex-direction: column;">
+     <!-- Navigation Content background-color:#0d1213;background-image:url('../static/abstract.jpg');background-blend-mode: multiply;background-size: 100vw 100vh;background-repeat: no-repeat; -->
+    <nav style="height:6vh;margin:none;padding:none;margin-bottom: -3vh;background-color: #00000061;box-shadow:none;border:none;">
+      <div class="nav-wrapper" style="margin:none;">
+        <a href="" class="brand-logo" style="color:rgb(255, 255, 255);font-size:13pt; padding-left:20px;margin-top: -5px;"><i class="tiny material-icons" style="color:rgb(255, 255, 255);">memory</i>Quantum Simulator Engine</a>
+        <ul class="right hide-on-med-and-down">
+          <li><a href="http://13.49.145.179:5001" style="margin-top: -6px;"><i class="material-icons left">add</i>Add Circuit</a></li>
+          <li><a href="http://13.49.145.179:5002" style="margin-top: -6px;"><i class="material-icons left">language</i>Bloch Sphere</a></li>
+          <li><a href="" style="margin-top: -6px;"><i class="material-icons left">info</i>Help</a></li>
+          <li><a href="" style="margin-top: -6px;"><i class="material-icons">more_vert</i></a></li>
+        </ul>
+      </div>
+    </nav>
+    <main>
+      <!-- Main Content -->
+      <div class="introheading">
+        <div class="title2">
+            Quantum Simulator Engine
+        </div> 
+        <div style="width:90%;">
+        <div style=" text-shadow: rgb(0, 0, 0) 1px 0 5px,rgb(0, 0, 0) 1px 0 10px,;;color:rgb(243, 255, 253);font-size:12pt;font-family:'Montserrat';font-weight:500;padding-top:1vh;padding-bottom:2vh;width:100%;margin-left:-8px;">
+            An online tool for <div style="display:inline;color:rgb(163, 249, 243);font-weight:550;">visualizing quantum gate operations</div> on the Bloch Sphere and <div style="display:inline;color:rgb(164, 252, 246);font-weight:550;">processing and optimizing</div> quantum circuits for storage and future use.
+        </div>
+        </div>
+        <div style="display: flex;justify-content:center; gap:23.5px; margin-bottom:20px;width:90%;">
+          <a id="getButton" href="http://13.49.145.179:5002" class="custom-button2 btn-small" >Bloch Sphere</a>
+          <a id="getButton" href="http://13.49.145.179:5001" class="custom-button2 btn-small" >Circuit Processor</a>
+        </div>
+      </div> 
+    </main>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+  </body>
+</html>

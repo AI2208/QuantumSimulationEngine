@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <!-- Meta Tags -->
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Quantum Simulator Engine</title>
+    
+        <!-- CSS Links -->
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@900&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300&display=swap" rel="stylesheet">
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css" type="text/css" rel="stylesheet" />
+        <link type="text/css" rel="stylesheet" href="{{ url_for('static',filename='css/style.css') }}"/>
+    
+        <!-- JavaScript Libraries -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+    </head>
+    <body style="background-color: #0d1213;display: flex;flex-direction: column;">
+        <!-- Navigation Content -->
+        <nav style="height:6vh;margin:none;padding:none;margin-bottom: -3vh;background-color: #0b0f0f;box-shadow:none;border:none;">
+        <div class="nav-wrapper" style="margin:none;">
+            <a href="http://13.49.145.179:5000" class="brand-logo" style="color:rgb(255, 255, 255);font-size:13pt; padding-left:20px;margin-top: -5px;"><i class="tiny material-icons" style="color:rgb(255, 255, 255);">memory</i>Quantum Simulator Engine</a>
+            <ul class="right hide-on-med-and-down">
+            <li><a href="" style="margin-top: -6px;"><i class="material-icons left">add</i>Add Circuit</a></li>
+            <li><a href="http://13.49.145.179:5002" style="margin-top: -6px;"><i class="material-icons left">language</i>Bloch Sphere</a></li>
+            <li><a href="" style="margin-top: -6px;"><i class="material-icons left">info</i>Help</a></li>
+            <li><a href="" style="margin-top: -6px;"><i class="material-icons">more_vert</i></a></li>
+            </ul>
+        </div>
+        </nav>
+        <main>
+        <!-- Main Content -->
+            <div class="heading">
+                <div style="text-align: center; align-items: center;gap:8px;margin-bottom: 13px;padding-right:55px;">
+                    <image src="{{url_for('static',filename = 'addicon.png')}}" style="width:40px;height:40px;opacity:1;margin-right:10px;margin-bottom:-8px;" ></image>
+                    <div class="title1" style="display:inline;padding-bottom: 1.5vh;">
+                        Add New Circuit
+                    </div> 
+                </div>
+                <div style="color:#f4fffe;font-size:11.5pt;font-weight:450;padding-top:1vh;width:90%;margin-left:-8px;">
+                    Enter a quantum circuit below and press 'Submit' to process the circuit and save it to the database. Or enter a gate ID from the database and press 'Get circuit' to retrieve an existing quantum circuit. Select 'View Circuit Data' to see information about the circuit.
+                </div>
+                <div style="display: flex;align-items: center;gap:25px; padding-bottom:none;margin-bottom:-10px;width:90%;line-height: 30px;">
+                    <div class="input-field col s12" style="width:72%;">
+                        <textarea id="circuitInput" class="materialize-textarea" style="color:white;border-color: darkcyan;"></textarea>
+                        <label for="textarea1" style="margin-left:-10px;color:darkcyan">Enter circuit:</label>
+                    </div>
+                    <input id="submitButton" type="submit" value="Submit Circuit" style="height:40px;width:25%;padding-top:2px;" class="custom-button btn-small">
+                </div>
+                <div style="display: flex;align-items: center;gap:23.5px; margin-bottom:20px;width:90%;">
+                <div style="font-size:13.5pt;font-weight:600;padding-top:14px;margin-left:0px">Enter Circuit ID: </div>
+                <input id="jobID" type="text2" style="width:50%;font-family:'Montserrat';font-weight: bold;font-size:10pt;" placeholder="Enter ID here">
+                <a id="getButton" class="custom-button btn-small" style="margin-top:15px;width:25%;padding-top:1px;padding-bottom: 34px;">Get circuit</a>
+                </div>
+                <ul class="collapsible" style="margin-top:1.5vh;width:90%;border:transparent;box-shadow:none;padding-bottom:50px;margin-bottom:80px;">
+                    <li>
+                    <div class="collapsible-header" style="color: white; border-radius: 5px; border:none;box-shadow:none;background-color: rgba(0, 41, 41, 0.795); line-height: 30px; padding: 5px; margin: 0;">
+                        <i class="material-icons" style="margin-top:4px;">expand_more</i>View Circuit Data
+                    </div> 
+                    <div class="collapsible-body" style="border: 2px solid rgba(0, 41, 41, 0.795);  border-top:none; padding-top: 0px; text-align:left;">
+                        <pre id="responseContent">No circuit ID has been inputted. Please enter a valid circuit ID above or add<br> a new circuit to see the relevant circuit data.</pre>
+                    </div>
+                    </li>
+                    <li style="margin-top:20px;margin-bottom:40px;">
+                    <div class="collapsible-header" style="border: none; box-shadow:none; color: white; border-radius: 5px; background-color: rgba(0, 149, 139, 0.562); line-height: 30px; padding: 5px;">
+                        <i class="material-icons" style="margin-top:4px;">expand_more</i>How To Use
+                    </div>
+                    <div class="collapsible-body" style="border: 2px solid rgba(0, 149, 139, 0.562);  border-top:none; padding-top: 0px;margin-bottom:80px;">
+                        <pre>A quantum circuit is a list of quantum gates which may be applied to a qubit. <br>In this case, the circuit must be a list of gate dictionaries, with axis and<br> amount keys specified. For example, <div style="display:inline;color:rgb(255, 255, 255);background-color: #008279a6;border-radius: 5px;padding: 4px;">[ { "axis": "X", "amount": 90 }, <br></div> <div style="display:inline;color:rgb(255, 255, 255);background-color: #008284a6;border-radius: 5px;padding: 4px;">{ "axis": "Y", "amount": 10 } ]</div> is a valid circuit describing a 90 degree <br>rotation around the X axis, and 10 degrees around the Y axis. If the entered <br>circuit is valid, it will be added to the database. <br>
+                            <br><div style="display:inline;text-align: center;">The circuit information stored in the database will be shown in the</div><br>'View Circuit Data' section. You can also enter an existing ID to see its <br> information. Also note that an optimised circuit will be returned where <br> possible (when consecutive gates are applied with the same axis) and <br>the result will show the state of the qubit along the Z-basis for <br> measurement.</pre>
+                    </div>
+                    </li>
+                </ul>
+            </div> 
+        </main>
+        <!-- Loading Event Script -->
+        <script>
+        document.addEventListener('DOMContentLoaded', function() {
+
+            var collapsibles = document.querySelectorAll('.collapsible');
+            M.Collapsible.init(collapsibles);
+
+            document.getElementById('submitButton').addEventListener('click', function(event) {
+                event.preventDefault();
+                let circuitData = document.getElementById('circuitInput').value;
+                console.log('Circuit Data:', circuitData);
+                if (circuitData === "") {
+                    alert(`Error: Invalid input: the circuit must be a non-empty list.`);
+                }
+                else {
+                    try {
+                        let requestData = { circuit: JSON.parse(circuitData) };
+                        console.log('Request Data:', requestData);
+                        fetch('/job', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                            },
+                            body: JSON.stringify(requestData),
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.error_code) {
+                                // Extract the error message.
+                                const errorMessage = data.error_reason;
+
+                                // Present a user-friendly error message.
+                                alert(`Error: ${errorMessage}`);
+                            } else {
+                                // Handle successful response.
+                                document.getElementById('responseContent').textContent = JSON.stringify(data, null, 2);
+                            }
+                        })
+                        .catch((error) => {
+                            console.error('Error:', error);
+                        });
+                    } catch (error) {
+                        alert("Invalid circuit format. The circuit must be a non-empty list of gates.");
+                    }
+                }
+            });
+            document.getElementById('getButton').addEventListener('click', function(event) {
+                event.preventDefault();
+
+                let jobId = document.getElementById('jobID').value;
+                console.log('Job ID:', jobId);
+
+                // Check if the jobId is an integer
+                if (!jobId || isNaN(jobId)) {
+                    alert(`Error: Job ID must be an integer.`);
+                    return;
+                }
+
+                fetch(`/job/${jobId}`, {
+                    method: 'GET'
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.error_code) {
+                        // Extract the error message.
+                        const errorMessage = data.error_reason;
+
+                        // Present a user-friendly error message.
+                        alert(`Error: ${errorMessage}`);
+                    } else {
+                        // Handle successful response.
+                        document.getElementById('responseContent').textContent = JSON.stringify(data, null, 2);
+                    }
+                })
+                .catch((error) => {
+                    console.error('Error:', error);
+                });
+            });
+        });
+        </script>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    </body>
+</html>

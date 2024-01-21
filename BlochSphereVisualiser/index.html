@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html>
+  <head>
+      <!-- Meta Tags -->
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <title>Quantum Simulator Engine</title>
+  
+      <!-- CSS Links -->
+      <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+      <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@900&display=swap" rel="stylesheet">
+      <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300&display=swap" rel="stylesheet">
+      <link href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css" type="text/css" rel="stylesheet" />
+      <link type="text/css" rel="stylesheet" href="style.css"/>
+  
+      <!-- JavaScript Libraries -->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/11.2.1/math.min.js"></script>
+      <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+  </head>
+  <body style="background-color:#0d1213;margin-bottom:0px;box-shadow:none;border:none;display: flex;flex-direction: column;">
+     <!-- Navigation Content -->
+    <nav style="height:6vh;margin:none;padding:none;margin-bottom: -3vh;background-color: rgba(0, 0, 0, 0.185);box-shadow:none;border:none;">
+      <div class="nav-wrapper" style="margin:none;">
+        <a href="http://13.49.145.179:5000" class="brand-logo" style="color:rgb(255, 255, 255);font-size:13pt; padding-left:20px;margin-top: -5px;"><i class="tiny material-icons" style="color:rgb(255, 255, 255);">memory</i>Quantum Simulator Engine</a>
+        <ul class="right hide-on-med-and-down">
+          <li><a href="http://13.49.145.179:5001" style="margin-top: -6px;"><i class="material-icons left">add</i>Add Circuit</a></li>
+          <li><a href="" style="margin-top: -6px;"><i class="material-icons left">language</i>Bloch Sphere</a></li>
+          <li><a href="" style="margin-top: -6px;"><i class="material-icons left">info</i>Help</a></li>
+          <li><a href="" style="margin-top: -6px;"><i class="material-icons">more_vert</i></a></li>
+        </ul>
+      </div>
+    </nav>
+    <main>
+      <!-- Main Content -->
+      <div class="row">
+        <div class="col s12 m12 l6" style="background-color:transparent;padding-right:0px;margin-right:0px;padding-top:0px;margin-top:7.5vh;">
+          <ul  style="margin-left:40px;margin-right:0px;padding-right:0px;">
+            <li class="container1" style="padding-top:0px; margin-bottom:0px;border-top-right-radius: 10px;border-top-left-radius: 10px;">
+              <div class="header subheading">Custom Circuit</div>
+              <div class="body" style="font-size:12pt;padding-top:1.5vh;padding-bottom: 0.5vh;">
+                Enter a valid circuit ID of an existing circuit in the database to apply it to the qubit. Relevant circuit data is provided below. To add a new circuit, redirect to the main page.
+              </div>
+              <div style="display: flex;align-items: center;gap:25px; margin-bottom:20px;">
+                <div style="font-size:13.5pt;font-family: monospace;font-weight: bold;padding-top:14px;">Enter Circuit ID: </div>
+                <input id="jobID" type="text2" placeholder="Enter ID here">
+                <a class="register2 btn-small" onclick="fetchCircuitAndApply()" style="margin-top:15px;width:20%;padding-top:1px;padding-bottom: 34px;">Apply</a>
+              </div>
+              <ul class="collapsible" style="border-color:rgba(0, 49, 49, 0.394);border-radius:5px;margin-top:1.5vh;">
+                <li>
+                  <div class="collapsible-header" style="border-color:rgba(0, 49, 49, 0.394);color:white;border-radius: 5px;background-color: rgba(0, 49, 49, 0.555);line-height: 30px;padding:5px;margin:0;"><i class="material-icons">expand_more</i>View Circuit Data</div>
+                  <div class="collapsible-body" style="border-color:rgba(0, 49, 49, 0.394);padding-top:0px;"><pre id="responseContent">No circuit ID has been inputted. Please enter a valid circuit ID above <br>to see the circuit data.</pre></div>
+                </li>
+              </ul>
+            </li> 
+            <li class="container1">
+              <div class="header subheading">Standard Gates</div>
+              <div class="body">
+                <table>
+                  <tr>
+                    <td style="font-family:monospace;max-width:6em;">Half-turn gates:</td>
+                    <td style="padding-bottom:1.5vh;padding-top:1.5vh;">
+                      <a class="register2 btn-small" onclick="rotate_state('x',math.PI);" style="margin-right:6px;">X</a>
+                      <a class="register2 btn-small" onclick="rotate_state('y',math.PI);" style="margin-right:6px;">Y</a>
+                      <a class="register2 btn-small" onclick="rotate_state('z',math.PI);" style="margin-right:6px;">Z</a>
+                      <a class="register2 btn-small" onclick="rotate_state('y',math.PI/2);rotate_state('x',math.PI);" style="margin-right:7px;">H</a>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td style="font-family:monospace;max-width:6em;">Quarter-turn gates:</td>
+                    <td style="padding-bottom:1.5vh;padding-top:1.5vh;"> 
+                      <a class="register2 btn-small" onclick="rotate_state('x',math.PI/2);" style="margin-right:6px;">&radic;X</a>
+                      <a class="register2 btn-small" onclick="rotate_state('y',math.PI/2);" style="margin-right:6px;">&radic;Y</a>
+                      <a class="register2 btn-small" onclick="rotate_state('z',math.PI/2);" style="margin-right:6px;">&radic;Z</a>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td style="font-family:monospace;max-width:6em;">Eighth-turn gates:</td>
+                    <td style="padding-bottom:1.5vh;padding-top:1.5vh;"> 
+                      <a class="register2 btn-small" onclick="rotate_state('z',math.PI/4);" style="margin-right:6px;">T</a>
+                      <a class="register2 btn-small" onclick="rotate_state('z',-math.PI/4);" style="margin-right:6px;">T†</a>
+                    </td>
+                  </tr>
+                </table>
+              </div>
+            </li>  
+            <li class="container1" style="margin-top:1vh;margin-bottom:0.5px;padding-bottom: 0px;border-bottom-right-radius: 10px;border-bottom-left-radius: 10px;">
+              <div class="header subheading">Custom Rotation</div>
+              <div class="body" >
+                <table>
+                  <tr style="padding:none;margin:none;">
+                    <td style="font-family:monospace;">X-axis:</td>
+                    <td style="padding-bottom:1.5vh;padding-top:1.5vh;">
+                      <a class="register1 btn-small" onclick="rotate_state('x',math.PI/2);">+90°</a>
+                      <a class="register1 btn-small" onclick="rotate_state('x',-math.PI/2);">-90°</a>
+                      <a class="register1 btn-small" onclick="rotate_state('x',math.PI);">+180°</a>
+                      <a class="register1 btn-small" onclick="rotate_state('x',-math.PI);">-180°</a>
+                      <div class="input-field inline" style="width:8em; margin-left:0.5em;margin-right:1em;height:30px;">
+                        <input id="x_angle" type="number" style="width:8em;color:white;height:30px;" placeholder="Enter custom angle">
+                      </div>
+                      <a class="register2 btn-small" onclick="rotate_state('x',document.getElementById('x_angle').value/180*math.PI);">Apply</a>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td style="font-family:monospace;min-width:5.5em;">Y-axis:</td>
+                    <td style="padding-bottom:1.5vh;padding-top:1.5vh;">
+                      <a class="register1 btn-small" onclick="rotate_state('y',math.PI/2);">+90°</a>
+                      <a class="register1 btn-small" onclick="rotate_state('y',-math.PI/2);">-90°</a>
+                      <a class="register1 btn-small" onclick="rotate_state('y',math.PI);">+180°</a>
+                      <a class="register1 btn-small" onclick="rotate_state('y',-math.PI);">-180°</a>
+                      <div class="input-field inline" style="width:8em; margin-left:0.5em;margin-right:1em;height:30px;">
+                        <input id="y_angle" type="number" style="width:8em;color:white;height:30px;" placeholder="Enter custom angle">
+                      </div>
+                      <a class="register2 btn-small" onclick="rotate_state('y',document.getElementById('y_angle').value/180*math.PI);">Apply</a>
+                    </td>
+                  </tr >
+                  <tr style="border:none;">
+                    <td style="font-family:monospace;">Z-axis:</td>
+                    <td style="padding-bottom:1.5vh;padding-top:1.5vh;">
+                      <a class="register1 btn-small" onclick="rotate_state('z',math.PI/2);">+90°</a>
+                      <a class="register1 btn-small" onclick="rotate_state('z',-math.PI/2);">-90°</a>
+                      <a class="register1 btn-small" onclick="rotate_state('z',math.PI);">+180°</a>
+                      <a class="register1 btn-small" onclick="rotate_state('z',-math.PI);">-180°</a>
+                      <div class="input-field inline" style="width:8em; margin-left:0.5em;margin-right:1em;height:30px;">
+                        <input id="z_angle" type="number" style="width:8em;color:white;height:30px;" placeholder="Enter custom angle">
+                      </div>
+                      <a class="register2 btn-small" onclick="rotate_state('z',document.getElementById('z_angle').value/180*math.PI);">Apply</a>
+                    </td>
+                  </tr>
+                </table>
+              </div>
+            </li>
+          </ul>        
+        </div>
+        <div class="col s12 m12 l6" style="background-color:#0d1213;margin-top:55px;">
+          <div id='blochDiv' class='card' style='background-color:#0d1213;margin-top:0vh;padding-bottom: 65vh;border:none;box-shadow: none;'></div>
+          <div class="row s7" style="margin-top:-2vh;">
+            <div id="state" class="statevector">
+              |&psi;<sub>current</sub>〉 = 1|0〉 + 0|1〉
+            </div>
+          </div>
+          <div class="row s7">
+            <div class="statevector" style="margin-top:20px;">
+              |&psi;<sub>initial</sub>〉 = 1|0〉 + 0|1〉
+            </div>
+          </div>
+            <div style="display: flex;justify-content: center;gap:3.5%; margin-top:4vh;">
+              <a class="register1 btn-small" onclick="initializePlot()">Reinitialise</a>
+              <a class="register1 btn-small" onclick="undo()">Undo Previous Gate</a>
+            </div>
+        </div>
+        </div>
+      </div>
+    </main>
+    <!-- Loading Event Script -->
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+          var collapsibles = document.querySelectorAll('.collapsible');
+          M.Collapsible.init(collapsibles);
+      });
+    </script>
+
+    <!-- Page Load Completion Script -->
+    <script>
+        window.addEventListener('load', function() {
+            document.body.classList.add('is-loaded');
+        });
+    </script>
+
+    <!-- Additional JavaScript Files -->
+    <script src="qubit_operations.js"></script>
+    <script type="text/javascript" src="plot.js"></script>
+    <script type="text/javascript" src="api-calls.js"></script>
+    <script type="text/javascript" src="ui_control.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+  </body>
+</html>

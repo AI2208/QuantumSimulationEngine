@@ -1,0 +1,58 @@
+# Ignore Python bytecode files
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Ignore virtual environment directories
+venv/
+env/
+ENV/
+
+# Ignore Git and version control
+.git/
+.gitignore
+.svn/
+.cvsignore
+
+# Ignore IDE specific files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Ignore common operating system files
+.DS_Store
+Thumbs.db
+
+# Ignore common files in Python projects
+*.log
+*.csv
+*.json
+pip-log.txt
+pip-delete-this-directory.txt
+htmlcov/
+.tox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+.hypothesis/
+.pytest_cache/
+
+# Ignore docker-compose files and other Docker related files
+docker-compose.yml
+docker-compose.*.yml
+Dockerfile
+*.dockerignore
+
+# Ignore specific files and folders related to your Flask app
+instance/
+*.db
+*.sqlite
+*.sqlite3
+
+# Ignore node_modules
+node_modules/
